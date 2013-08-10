@@ -57,7 +57,8 @@ public class JscienceTests {
 
         public void isEqualTo(double toValue, String toUnit) {
             double convertedValue = convert(fromValue, fromUnit, toUnit);
-            assertEquals(toValue, convertedValue, DELTA);
+            String message = String.format("conversion from %s to %s", fromUnit, toUnit);
+            assertEquals(message, toValue, convertedValue, DELTA);
         }
 
         private double convert(double value, String fromUnit, String toUnit) {
