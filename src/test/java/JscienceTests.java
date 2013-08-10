@@ -2,6 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.measure.unit.NonSI;
+import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 import javax.measure.unit.UnitFormat;
 
@@ -14,9 +15,11 @@ import static org.junit.Assert.assertEquals;
 public class JscienceTests {
     @Before
     public void addMoreAliases() throws Exception {
+        // check the Unit class for more methods: plus, times, divide, inverse
         UnitFormat unitFormat = UnitFormat.getInstance();
         unitFormat.alias(NonSI.NAUTICAL_MILE, "nm");
         unitFormat.alias(NonSI.METRIC_TON, "mt");
+        unitFormat.alias(SI.HERTZ.times(1.0 / 60.0), "rpm");
     }
 
     @Test
@@ -24,6 +27,7 @@ public class JscienceTests {
         assertThat(5.00, "nm").isEqualTo(9.26, "km");
         assertThat(1000, "kg/nm").isEqualTo(539.956803456, "kg/km");
         assertThat(1.00, "mt/nm").isEqualTo(539.956803456, "kg/km");
+        assertThat(120, "rpm").isEqualTo(2.0, "Hz");
     }
 
     public static ConversionAssert assertThat(double fromValue, String fromUnit) {
