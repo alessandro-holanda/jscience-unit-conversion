@@ -20,6 +20,11 @@ public class JscienceTests {
         unitFormat.alias(NonSI.NAUTICAL_MILE, "nm");
         unitFormat.alias(NonSI.METRIC_TON, "mt");
         unitFormat.alias(SI.HERTZ.times(1.0 / 60.0), "rpm");
+
+        unitFormat.alias(NonSI.LITER, "l");
+        unitFormat.alias(NonSI.LITER.times(1e-3), "dl");
+        unitFormat.alias(NonSI.LITER.times(1e-6), "cl");
+        unitFormat.alias(NonSI.LITER.times(1e-9), "ml");
     }
 
     @Test
@@ -28,6 +33,12 @@ public class JscienceTests {
         assertThat(1000, "kg/nm").isEqualTo(539.956803456, "kg/km");
         assertThat(1.00, "mt/nm").isEqualTo(539.956803456, "kg/km");
         assertThat(120, "rpm").isEqualTo(2.0, "Hz");
+        assertThat(1000, "l").isEqualTo(1, "m^3");
+        assertThat(1, "l").isEqualTo(1, "dm^3");
+        assertThat(1, "dl").isEqualTo(1000, "cl");
+        assertThat(1, "dl").isEqualTo(1000000, "ml");
+        assertThat(1, "m^3").isEqualTo(1000000, "dl");
+        assertThat(1000, "cl").isEqualTo(1, "dl");
     }
 
     public static ConversionAssert assertThat(double fromValue, String fromUnit) {
