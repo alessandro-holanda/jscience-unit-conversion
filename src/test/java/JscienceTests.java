@@ -33,5 +33,6 @@ public class JscienceTests {
     @Test
     public void canConvert() {
         assertConversion(5.00, "nm", 9.26, "km");
+        assertConversion(1000, "kg/nm", 539.956803456, "kg/km");
     }
 }
