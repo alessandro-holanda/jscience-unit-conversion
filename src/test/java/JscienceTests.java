@@ -19,22 +19,37 @@ public class JscienceTests {
         unitFormat.alias(NonSI.METRIC_TON, "mt");
     }
 
-    private double convert(double value, String fromUnit, String toUnit) {
-        return Unit.valueOf(fromUnit)
-                .getConverterTo(Unit.valueOf(toUnit))
-                .convert(value);
-    }
-
-    private void assertConversion(double fromValue, String fromUnit,
-                                  double toValue, String toUnit) {
-        double convertedValue = convert(fromValue, fromUnit, toUnit);
-        assertEquals(toValue, convertedValue, .0001);
-    }
-
     @Test
     public void canConvert() {
-        assertConversion(5.00, "nm", 9.26, "km");
-        assertConversion(1000, "kg/nm", 539.956803456, "kg/km");
-        assertConversion(1.00, "mt/nm", 539.956803456, "kg/km");
+        assertThat(5.00, "nm").isEqualTo(9.26, "km");
+        assertThat(1000, "kg/nm").isEqualTo(539.956803456, "kg/km");
+        assertThat(1.00, "mt/nm").isEqualTo(539.956803456, "kg/km");
+    }
+
+    public static ConversionAssert assertThat(double fromValue, String fromUnit) {
+        return new ConversionAssert(fromValue, fromUnit);
+    }
+
+    private static class ConversionAssert {
+        public static final double DELTA = .0001;
+        private double fromValue;
+        private String fromUnit;
+
+        private ConversionAssert(double fromValue, String fromUnit) {
+            this.fromValue = fromValue;
+            this.fromUnit = fromUnit;
+        }
+
+        public void isEqualTo(double toValue, String toUnit) {
+            double convertedValue = convert(fromValue, fromUnit, toUnit);
+            assertEquals(toValue, convertedValue, DELTA);
+        }
+
+        private double convert(double value, String fromUnit, String toUnit) {
+            return Unit.valueOf(fromUnit)
+                    .getConverterTo(Unit.valueOf(toUnit))
+                    .convert(value);
+        }
+
     }
 }
